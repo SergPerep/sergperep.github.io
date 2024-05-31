@@ -1,7 +1,7 @@
 <script setup>
     import { ref } from 'vue'
     import { withBase } from 'vitepress';
-    const baseUrl = "/img/36daysoftype_2021/";
+    const baseUrl = "./img/36daysoftype_2021/";
     const chars = ref([
         { name: "a", caption: 'A is for an altar for erotic confessions'},
         { name: "b", caption: 'B is for the bus station at the edge of the world'},
@@ -44,12 +44,12 @@
 
 # 36daysoftype 2021
 
-<img :src='withBase("/img/36daysoftype_2021/a.svg")'/>
+<img :src='withBase("./img/36daysoftype_2021/a.svg")'/>
 
 
 <ul class="gallery">
     <li v-for="char in chars">
-        <img :src='withBase(baseUrl + char.name + ".svg")'/>
+        <img :src='baseUrl + char.name + ".svg"'/>
         <p>{{char.caption}}</p>
     </li>
 </ul>
