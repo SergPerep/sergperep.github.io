@@ -44,6 +44,9 @@
 
 # 36daysoftype 2021
 
+<img :src='withBase("/img/36daysoftype_2021/a.svg")'/>
+
+
 <ul class="gallery">
     <li v-for="char in chars">
         <img :src='withBase(baseUrl + char.name + ".svg")'/>
