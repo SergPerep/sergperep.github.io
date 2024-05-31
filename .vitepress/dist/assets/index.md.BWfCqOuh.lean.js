@@ -1,1 +1,0 @@
-import{_ as e,c as a,o as t,i as o}from"./chunks/framework.BI888AAe.js";const f=JSON.parse('{"title":"May 2024","description":"","frontmatter":{"home":true},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),s={name:"index.md"},n=o("",7),i=[n];function r(c,d,h,l,p,_){return t(),a("div",null,i)}const u=e(s,[["render",r]]);export{f as __pageData,u as default};
