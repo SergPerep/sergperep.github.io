@@ -3,3 +3,49 @@ html {
   font-family: Arial, Helvetica;
 }
 
+body{
+  max-width: 900px;
+  padding: 48px;
+}
+
+p{
+  line-height:136%;
+}
+
+img {
+  width: 100%;
+}
+
+.cover{
+  /*border: 1px solid #00000060;*/
+  border-radius: 4px;
+  /*background: #f0f0f0;*/
+}
+
+p{
+  max-width: 600px;
+}
+.gallery {
+  background: #fff;
+  display:flex; 
+  flex-wrap: wrap;
+  column-gap: 15px;
+  list-style-type: none;
+  padding: 0;
+  justify-content: space-between;
+}
+
+.gallery li{
+  width: calc(25% - 15px);
+  padding: 0;
+  /*border: 1px solid black;*/
+}
+
+.gallery img{
+  display: block
+}
+
+a{
+  color: black;
+  font-weight: 600;
+}
