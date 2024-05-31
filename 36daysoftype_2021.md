@@ -40,11 +40,12 @@
         { name: "8", caption: '8 is for eight juicy moths in the jar'},
         { name: "9", caption: '9 is for nine doors hidden deep in the woods'},
     ]);
+    const imageSource = "./img/36daysoftype_2021/a.svg";
 </script>
 
 # 36daysoftype 2021
 
-<img src="./img/36daysoftype_2021/a.svg"/>
+<img :src="imageSource"/>
 
 
 <ul class="gallery">
