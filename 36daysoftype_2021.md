@@ -44,7 +44,7 @@
 
 # 36daysoftype 2021
 
-<img :src='withBase("./img/36daysoftype_2021/a.svg")'/>
+<img src="./img/36daysoftype_2021/a.svg"/>
 
 
 <ul class="gallery">
