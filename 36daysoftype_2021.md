@@ -1,6 +1,6 @@
 <script setup>
     import { ref } from 'vue'
-    const baseUrl = "img/36daysoftype_2021/";
+    const baseUrl = "/img/36daysoftype_2021/";
     const chars = ref([
         { name: "a", caption: 'A is for an altar for erotic confessions'},
         { name: "b", caption: 'B is for the bus station at the edge of the world'},

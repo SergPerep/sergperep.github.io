@@ -1,6 +1,6 @@
 <script setup>
     import { ref } from 'vue'
-    const baseUrl = "img/36daysoftype_2020/"
+    const baseUrl = "/img/36daysoftype_2020/"
     const edition_1 = ref([
         { name: "a", caption: 'A is for ambitions that kill joy'},
         { name: "b", caption: 'B is for bunnies in a magic hat'},
@@ -98,6 +98,10 @@
 
 I wanted to redo characters that I have designed before, here is the result:
 
+
+
+
+
 <ul class="gallery">
     <li v-for="char in edition_2">
         <img :src="baseUrl + 'edition_2\\' + char.name + '.svg'"/>
@@ -106,32 +110,6 @@ I wanted to redo characters that I have designed before, here is the result:
 </ul>
 
 <style>
-    .cover{
-        //border: 1px solid #00000060;
-        border-radius: 4px;
-        //background: #f0f0f0;
-    }
-    p{
-        max-width: 600px;
-    }
-    .gallery {
-        background: #fff;
-        display:flex; 
-        flex-wrap: wrap;
-        column-gap: 15px;
-        list-style-type: none;
-        padding: 0;
-        justify-content: space-between;
-    }
-
-    .gallery li{
-        width: calc(25% - 15px);
-        padding: 0;
-        //border: 1px solid black;
-    }
-
-    .gallery img{
-        display: block
-    }
+    
 
 </style>
