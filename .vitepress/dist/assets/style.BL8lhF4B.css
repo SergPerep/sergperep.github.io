@@ -1,0 +1,1 @@
+html{font-family:Arial,Helvetica}body{max-width:900px;padding:48px}p{line-height:136%}img{width:100%}.cover{border-radius:4px}p{max-width:600px}.gallery{background:#fff;display:flex;flex-wrap:wrap;column-gap:15px;list-style-type:none;padding:0;justify-content:space-between}.gallery li{width:calc(25% - 15px);padding:0}.gallery img{display:block}a{color:#000;font-weight:600}
