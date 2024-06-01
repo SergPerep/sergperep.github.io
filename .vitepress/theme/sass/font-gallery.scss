@@ -1,0 +1,37 @@
+.font-gallery {
+  background: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 15px;
+  list-style-type: none;
+  padding: 0;
+  justify-content: space-between;
+}
+
+.font-gallery li {
+  width: calc(25% - 15px);
+  padding: 0;
+  /*border: 1px solid black;*/
+}
+
+.font-gallery img {
+  display: block;
+}
+
+@media all and (width <= 900px) {
+  .font-gallery li {
+    width: calc(100% / 3 - 15px);
+  }
+}
+
+@media all and (width <= 700px) {
+  .font-gallery li {
+    width: calc(100% / 2 - 15px);
+  }
+}
+
+@media all and (width <= 600px) {
+  .font-gallery li {
+    width: 100%;
+  }
+}
