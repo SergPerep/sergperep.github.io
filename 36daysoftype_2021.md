@@ -53,5 +53,5 @@
 </ul>
 
 <style lang="scss">
-    @use '.vitepress/theme/sass/font-gallery';
+    @use '.vitepress/theme/scss/font-gallery';
 </style>

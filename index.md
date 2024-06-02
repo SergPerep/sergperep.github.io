@@ -6,6 +6,8 @@ home: true
 
 [36daysoftype 2020](/36daysoftype_2020.md)
 
+[Season of decay icons](/season_of_decay_icons.md)
+
 
 ## Logs
 
