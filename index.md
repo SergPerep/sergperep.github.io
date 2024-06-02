@@ -2,6 +2,8 @@
 home: true
 ---
 
+[Holiday cards](/holiday_cards.md)
+
 [36daysoftype 2021](/36daysoftype_2021.md)
 
 [36daysoftype 2020](/36daysoftype_2020.md)
