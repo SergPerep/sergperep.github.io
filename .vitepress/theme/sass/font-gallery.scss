@@ -6,16 +6,16 @@
   list-style-type: none;
   padding: 0;
   justify-content: space-between;
-}
 
-.font-gallery li {
-  width: calc(25% - 15px);
-  padding: 0;
-  /*border: 1px solid black;*/
-}
+  li {
+    width: calc(25% - 15px);
+    padding: 0;
+  }
 
-.font-gallery img {
-  display: block;
+  img {
+    display: block;
+  }
+
 }
 
 @media all and (width <= 900px) {
