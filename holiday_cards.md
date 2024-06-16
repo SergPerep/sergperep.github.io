@@ -1,9 +1,10 @@
 <script setup>
- import { ref } from "vue";
+import { ref } from "vue";
 
 const baseUrl = "/img/holiday_cards/";
 
 const originalCards = [
+    { name: "silly_boy", desc: "Birthday card for Nastya", date: new Date("June 11, 2024") },
     { name: "mouse_dancing", desc: "Birthday card for Aimee", date: new Date("May 14, 2024") },
     { name: "disco_cat", desc: "Birthday card for Ivo", date: new Date("May 14, 2024") },
     { name: "man_twerking", desc: "Birthday card for Max", date: new Date("September 16, 2023") },
@@ -15,13 +16,13 @@ const originalCards = [
     { name: "moon_kissing_sun", desc: "Christmas card for Kirill and Sergei", date: new Date("December 26, 2022") },
     { name: "christmas_sweater", desc: "Christmas card for Aimee", date: new Date("December 26, 2022") },
     { name: "christmas_decorations", desc: "Christmas card Lies and Hans", date: new Date("December 26, 2022") },
-    ]
+    ];
+
 originalCards.sort((a, b) => {
     if (a.date > b.date) return -1;
     else if (a.date < b.date) return 1;
     else return 0;
 });
-
 
 const cards = ref(originalCards);
 
@@ -38,11 +39,10 @@ const cards = ref(originalCards);
 </ul>
 
 <style lang="scss">
-.holiday-cards-gallery{
-    max-width: 600px;
-    display: grid;
-    gap: 16px;
-    grid-template-columns: 1fr;
-}
-
+    .holiday-cards-gallery {
+        max-width: 600px;
+        display: grid;
+        gap: 16px;
+        grid-template-columns: 1fr;
+    }
 </style>
