@@ -5,7 +5,7 @@ const baseUrl = "/img/holiday_cards/";
 
 const originalCards = [
     { name: "busy_office_cat", desc: "Birthday card for Nurlan", date: new Date("August 1, 2024")},
-    { name: "bunny_with_fans", desc: "Welcome to the Germany card for Valentina", date: new Date("August 1, 2024")},
+    { name: "bunny_with_fans", desc: "Welcome-to-Germany card for Valentina", date: new Date("August 1, 2024")},
     { name: "silly_boy", desc: "Birthday card for Nastya", date: new Date("June 1, 2024") },
     { name: "mouse_dancing", desc: "Birthday card for Aimee", date: new Date("May 1, 2024") },
     { name: "disco_cat", desc: "Birthday card for Ivo", date: new Date("May 1, 2024") },
