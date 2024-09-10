@@ -1,0 +1,2 @@
+# About me
+Backend developer who enjoys building APIs with a strong focus on user experience. Former UI/UX Designer, that keeps designing applications and caring about users but now at a backend level.
