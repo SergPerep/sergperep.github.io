@@ -2,6 +2,12 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  markdown: {
+    theme: {
+      light: 'min-light',
+      dark: 'github-light'
+    }
+  },
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { property: 'og:image', content: '/thumbnail-image.jpg'}],

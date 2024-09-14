@@ -1,3 +1,13 @@
+@import "./vitepress-default-theme/vars.css";
+@import "./vitepress-default-theme/base.css";
+@import "./vitepress-default-theme/icons.css";
+@import "./vitepress-default-theme/utils.css";
+@import "./vitepress-default-theme/components/custom-block.css";
+@import "./vitepress-default-theme/components/vp-code.css";
+@import "./vitepress-default-theme/components/vp-code-group.css";
+@import "./vitepress-default-theme/components/vp-doc.css";
+@import "./vitepress-default-theme/components/vp-sponsor.css";
+
 /* RESER */
 
 /* Default browser styles reset*/
@@ -6,22 +16,29 @@
   margin: 0;
 }
 
+body {
+  background: #f0f0f0;
+  color: black;
+}
+
 h1,
 h2,
 h3,
 h4,
 h6,
 h6 {
-  font-size: inherit;
-  font-weight: bold;
-
-  margin-top: 24px;
-    margin-bottom: 16px;
-    line-height: 1.25;
+  /* font-size: inherit;*/
+  font-weight: bold; 
+  color: black;
+  /* margin-top: 24px;
+  margin-bottom: 16px; */
+  /* line-height: 1.25; */
+  border-top: none;
+  padding-top: 0;
 }
 
-h2{
-  padding-bottom: .3em;
+h2 {
+  padding-bottom: 0.3em;
   font-size: 1.5em;
 }
 
@@ -41,40 +58,15 @@ div {
   box-sizing: inherit;
 }
 
-ul{
-  margin-bottom: 16px;
-  padding-left: 32px;
-}
-
-li+li {
-  margin-top: .25em;
-}
-
-/* Lists reset*/
-
-/* ul {
-    padding-left: 0;
-}
-
-ul > li {
-  list-style: none;
-} */
-
-/* Links style reset */
-
-a {
-  text-decoration: none;
-}
 
 /* Set divs to have border-box */
 
 div {
   box-sizing: border-box;
 }
-body{
-  background: #f0f0f0;
-}
-.page-container{
+
+
+.page-container {
   max-width: 800px;
   line-height: 1.5;
   padding: 48px;
@@ -85,22 +77,13 @@ button {
   border: 1px solid transparent;
 }
 
-h1 {
-  font-size: 2em;
-  margin: 16px 0;
-}
-
-html {
-  font-family: Arial, Helvetica;
-}
-
 @media all and (width <= 600px) {
-  .page-container{
+  .page-container {
     padding: 24px;
   }
 }
 
-p{
+p {
   margin-bottom: 16px;
 }
 
@@ -108,17 +91,22 @@ img {
   width: 100%;
 }
 
-.cover{
-  /*border: 1px solid #00000060;*/
-  border-radius: 4px;
-  
-}
-
-hr{
+hr {
   margin: 2em 0 1.5em;
 }
 
-a{
+a {
   color: black;
-  text-decoration: underline;
 }
+
+/* .dark .vp-code span {
+  color: var(--shiki-dark, inherit);
+}
+
+html:not(.dark) .vp-code span {
+  color: var(--shiki-light, inherit);
+}
+
+.dark div[class*="language-"] {
+  background: black;
+} */

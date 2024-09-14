@@ -10,8 +10,8 @@ I’m a software engineer in the mornings and a comic artist and a storyteller a
 
  ## Art projects
 
-- [Comics](/comics.md)
-- [Holiday cards](/holiday_cards.md)
+- [Comics](/projects/comics.md)
+- [Holiday cards](/projects/holiday_cards.md)
 
 <!-- - - [Wall art]()
 - [Other...]()
