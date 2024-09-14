@@ -35,8 +35,8 @@ const cards = ref(originalCards);
 
 <ul class="holiday-cards-gallery">
     <li v-for="card in cards">
-        <img loading="lazy" width="200px" :src='baseUrl + card.name + ".jpg"' />
         <p>{{card.desc + " | " + card.date.toLocaleDateString("en-NL", { month: "long", year: "numeric" })}}</p>
+        <img loading="lazy" width="200px" :src='baseUrl + card.name + ".jpg"' />
     </li>
 </ul>
 
@@ -46,5 +46,7 @@ const cards = ref(originalCards);
         display: grid;
         gap: 16px;
         grid-template-columns: 1fr;
+        padding-left:0;
+        list-style: none;
     }
 </style>
