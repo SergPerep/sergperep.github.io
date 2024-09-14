@@ -6,7 +6,7 @@ home: true
 
 I’m a software engineer in the mornings and a comic artist and a storyteller at nights. I eat ramen in Utrecht, obsessively take notes, and cry a little while watching cartoons.
 
-![image](/img/me/me_in_brussel.jpg)
+![image](/public/cover-image.jpg)
 
  ## Art projects
 
