@@ -42,9 +42,9 @@ const cards = ref(originalCards);
 
 <style lang="scss">
     .holiday-cards-gallery {
-        max-width: 600px;
+        margin-top: 0;
+        gap: 0;
         display: grid;
-        gap: 16px;
         grid-template-columns: 1fr;
         padding-left:0;
         list-style: none;
