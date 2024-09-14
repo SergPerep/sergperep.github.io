@@ -12,6 +12,7 @@ I’m a software engineer in the mornings and a comic artist and a storyteller a
 
 - [Comics](/comics.md)
 - [Holiday cards](/holiday_cards.md)
+
 <!-- - - [Wall art]()
 - [Other...]()
 [36daysoftype 2021](/36daysoftype_2021.md)
@@ -36,6 +37,7 @@ The sequence of choices and concequences.
 ![image](img\comic_strip_01.jpg) -->
 
 <!-- \- The future is in render \- -->
+---
 
 [LinkedIn](https://www.linkedin.com/in/sergperep/) • [GitHub](https://github.com/sergperep) • [Instagram](https://www.instagram.com/serg.perep/) • [Behance](https://www.behance.net/SergPerep)
  
