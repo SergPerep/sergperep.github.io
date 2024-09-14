@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   markdown: {
+    anchor: { level: undefined },
     theme: {
       light: 'min-light',
       dark: 'github-light'
