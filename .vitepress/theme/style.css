@@ -95,8 +95,8 @@ html {
 }
 
 @media all and (width <= 600px) {
-  body{
-    padding: 16px;
+  .page-container{
+    padding: 24px;
   }
 }
 
