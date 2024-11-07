@@ -4,9 +4,13 @@ import { ref } from "vue";
 const baseUrl = "/img/holiday_cards/";
 
 const originalCards = [
-    { name: "cat_in_box", desc: "Birthday card for Ales", date: new Date("June, 2024")},
-    { name: "girl_in_puffer_jacket", desc: "Birthday card for Valentina", date: new Date("September, 2024")},
-    { name: "wolf", desc: "Birthday card for Maxim", date: new Date("September, 2024")},
+    { name: "owl", desc: "Birthday card for Angela", date: new Date("November 1, 2024")},
+    { name: "cat_with_saxophone", desc: "Birthday card for Kamran", date: new Date("October 1, 2024")},
+    { name: "flamingo_with_cups", desc: "Birthday card for Guy", date: new Date("October 1, 2024")},
+    { name: "magic_caterpillar", desc: "Birthday card for Yura", date: new Date("October 1, 2024")},
+    { name: "cat_in_box", desc: "Birthday card for Ales", date: new Date("June 1, 2024")},
+    { name: "girl_in_puffer_jacket", desc: "Birthday card for Valentina", date: new Date("September 1, 2024")},
+    { name: "wolf", desc: "Birthday card for Maxim", date: new Date("September 1, 2024")},
     { name: "busy_office_cat", desc: "Birthday card for Nurlan", date: new Date("August 1, 2024")},
     { name: "bunny_with_fans", desc: "Welcome-to-Germany card for Valentina", date: new Date("August 1, 2024")},
     { name: "silly_boy", desc: "Birthday card for Nastya", date: new Date("June 1, 2024") },
