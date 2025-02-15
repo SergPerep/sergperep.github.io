@@ -8,10 +8,14 @@ I’m a software engineer in the mornings and a comic artist and a storyteller a
 
 ![image](/img/me/me_in_brussel.jpg)
 
- ## Art projects
+ ## Projects
 
 - [Comics](/projects/comics.md)
 - [Holiday cards](/projects/holiday_cards.md)
+
+## Guides and collections
+
+- [Ramen locations](/guides/ramen_locations.md)
 
 <!-- - - [Wall art]()
 - [Other...]()
