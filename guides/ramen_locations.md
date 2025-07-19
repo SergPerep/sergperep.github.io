@@ -8,7 +8,8 @@ Places to enjoy ramen in Utrecht and Amsterdam.
 |---|---|---|---|
 | Takumi | Japanese ramen | [Vredenburg 21, Utrecht](https://maps.app.goo.gl/8V1UStnm5W2B5FMw9)| Chicken ramen with burnt garlic and tonkotsu broth |
 | ICI | Japanese ramen | [Zadelstraat 10, Utrecht](https://maps.app.goo.gl/5N9UuBqBp8fqT71z5) | Chicken or duck ramen with tonkotsu broth. |
-| Nón Lá | Pho (Vietnamese noodle soup) | [Oudegracht 212, 3511 NS Utrecht](https://maps.app.goo.gl/evt2wzKcQLZsxZKP8) | Beef noodle soup "Bún bò Huế Nón Lá" |
+| Nón Lá | Pho (Vietnamese noodle soup) | [Oudegracht 212, 3511 NS Utrecht](https://maps.app.goo.gl/evt2wzKcQLZsxZKP8) | Pho Tai Nam |
+| Kimmade Vietnamese Food Village | Pho (Vietnamese noodle soup)| [Oudegracht aan de Werf 61, Utrecht](https://maps.app.goo.gl/t1Cw2BNEjvzACSnFA) | Phở Bò |
 | Sanju Ramen | Japanese Ramen | [Voorstraat 29, Utrecht](https://maps.app.goo.gl/MtjUvTJxZC56A38W9) | Awa chicken |
 
 ## Amsterdam
