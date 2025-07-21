@@ -14,9 +14,9 @@ Simple ways to improve C# .NET code speed
 7. Arrays vs lists
 8. Parallel tasks
 
-# Avoid chaining high-level functions
+# Avoid chaining collection extension methods
 
-A high-level function iterates the whole collection. A chain of high-level functions iterates collections several times. This increases processing time. 
+A LINQ extension method iterates the whole collection. A chain of extension methods iterates collections several times. This increases processing time. 
 
 To optimise and save time - combine high-level functions into a single for-loop, which will iterate the collection a single time.
 
@@ -128,22 +128,14 @@ GraveLease[] expiredleasesOfGrave = leasesByGraveid[selectedGraveId]
     .ToArray();
 ```
 
-# Avoid string concationations
-When you modify a string, you actually don't. Instead you create a new string. But the old version of the string is still lingering in the memory waiting to be consumed my the garbage collector.
+# Avoid string modifications
 
-```c#
-string finalText = "A";
-for (int i = 0; i++; i <= 5){
-    finalText += "B";
-}
+When you add two strings:
 
-// 5 strings are going to linger in the memory:
-// "A", 
-// "AB"
-// "ABB"
-// "ABBB"
-// "ABBBB"
-```
+1. Memory is allocated for the resulting string. Its size equals the combined length of the originals. 
+2. Characters from each string are copied into the new space.
+
+**The bottom line:** the longer the original strings, the slower the concatenation.
 
 If you concat a string once or twice - it is fine. But when you do this many times within a short period of time you are risking overload the memory, which will create noticable delay.
 
@@ -153,28 +145,42 @@ Consider this:
 string insertQueries = "";
 foreach (Food foodItem in foods)
 {
-    insertQueries += $"/nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});"
+    insertQueries += $"\nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});"
 }
 ```
 ```c#
 StringBuilder sb = new("");
 foreach (Food foodItem in foods)
 {
-    sb.Apped($"/nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});");
+    sb.Apped($"\nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});");
 }
 
 string insertQueries = sb.ToString();
 ```
 
-# Sort or not to sort
+# Insert without re-sorting
 
-# Insert without resort
+Imagine that you have sorted collection into which you want to insert new item. To preserve the order, now you need to re-sort the collection.
+
 ```c#
-
-List<string> euCountries; // sorted
-euCountries.Add("Albania");
+// Before optimization
+List<string> euCountries = new(_dataset_2012); // sorted
+euCountries.Add("Croatia"); // Croatia joined EU in 2013
 euCountries.Sort();
 ```
+
+Instead of re-sorting we can insert the new item in the right place using binary search.
+
+```c#
+// After optimization
+List<string> euCountries = new(_dataset_2012); // sorted
+string item = "Croatia"; // Croatia joined EU in 2013
+int index = euCountries.BinarySearch(item);
+if (index < 0) index = ~index;
+euCountries.Insert(index, "Croatia");
+```
+
+There is `SortedSet<T>` that automatically sorts when item is added. But building the it takes extra in comparison to the `List<T>`, which negates the perfomance win that it could have potentially provide. Though it is still more performative than double sort.
 
 ---
 
