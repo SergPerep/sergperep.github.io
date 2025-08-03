@@ -8,6 +8,10 @@ I’m a software engineer in the mornings and a comic artist and a storyteller a
 
 ![image](/img/me/me_in_brussel.jpg)
 
+## Dev blog
+
+- Code performance 🚧
+
  ## Projects
 
 - [Comics](/projects/comics.md)
