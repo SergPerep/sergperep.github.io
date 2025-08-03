@@ -19,8 +19,6 @@ List<string> waterPockemonNames = pockemons
 ```
 To optimise and save time - combine high-level functions into a single for-loop, which will iterate the collection a single time.
 
-
-
 ```c#
 
 // After optimization
@@ -35,6 +33,12 @@ foreach (Pockemon p in pockemons) // Iterates through 1025 items
 }
     
 ```
+
+A `foreach` loop always out-performs a chain of extension methods - but up to what point?
+
+LINQ extension methods became more performative in later .net versions. Which makes results of the optimisation less impressive.  
+
+Still the benefit of the optimisation grows with the size of collections and complexity of filtering and modification.
 
 ## `Distinct()` into `foreach` loop 
 
@@ -210,4 +214,6 @@ class NameCount
 # Array vs List
 
 
-# Parralel tasks
+## Multitasking
+
+This is the last point, because it’s obvious. If you are waiting for api response or reading/writing a file, don’t just waste your time, do something else meanwhile. Use Tasks and asynchronous methods.
