@@ -1,24 +1,10 @@
 # Optimize code performance - Quick and dirty
 
-Simple ways to improve C# .NET code speed 
-
-1. Iterate collection less:
-    - To build data structures
-    - Avoid chaining high-level functions
-    - Avoid double sorting
-2. Use string builder to generate strings
-3. Use dictionaries to find values
-4. Use insert sort algo when adding element to sorted collection
-5. Avoid double sort
-6. Do not covert to list intermediate collections
-7. Arrays vs lists
-8. Parallel tasks
+Simple ways to improve C# .NET code speed.
 
 # Avoid chaining collection extension methods
 
 A LINQ extension method iterates the whole collection. A chain of extension methods iterates collections several times. This increases processing time. 
-
-To optimise and save time - combine high-level functions into a single for-loop, which will iterate the collection a single time.
 
 Let's say we have a collection of  1,025 pockemons, 159 of which are of water type. And we want to get the collection of water type pockemons.
 
@@ -31,6 +17,9 @@ List<string> waterPockemonNames = pockemons
     .ToList() // Iterates through = 159 items
 
 ```
+To optimise and save time - combine high-level functions into a single for-loop, which will iterate the collection a single time.
+
+
 
 ```c#
 
@@ -73,11 +62,6 @@ foreach(Birth b in births)
 ```
 
 The `Sort()` sadly cannot be weaved into for-loop with `Where()`, since it requires the whole collection to be filtered to before sorting.
-
-# Avoid converting temporary collections to lists and arrays
-
-Sometimes you build a temporary collection to use it as base for another collection. !Example!. 
-
 
 # Consider dictionaries for repeated search
 
@@ -158,7 +142,7 @@ foreach (Food foodItem in foods)
 string insertQueries = sb.ToString();
 ```
 
-# Insert without re-sorting
+# Insert item without re-sorting
 
 Imagine that you have sorted collection into which you want to insert new item. To preserve the order, now you need to re-sort the collection.
 
@@ -219,3 +203,6 @@ class NameCount
 
 ```
 
+# Array vs List
+
+# Parralel tasks
