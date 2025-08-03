@@ -1,10 +1,10 @@
-# Optimize code performance - Quick and dirty
+# Code optimization
 
 Simple ways to improve C# .NET code speed.
 
 # Avoid chaining collection extension methods
 
-A LINQ extension method iterates the whole collection. A chain of extension methods iterates collections several times. This increases processing time. 
+A single LINQ extension method iterates a collection one time. A chain of LINQ extension methods iterates collections multiple times. This increases processing time. 
 
 Let's say we have a collection of  1,025 pockemons, 159 of which are of water type. And we want to get the collection of water type pockemons.
 
@@ -35,23 +35,25 @@ foreach (Pockemon p in pockemons) // Iterates through 1025 items
 }
     
 ```
-Some high-level functions are easily convertable into a for-loop such as
-`.Where()`, `Select()`, `ToArray()`, `ToList()` and `ToDictionary()`.
 
-Doing the same for `Distinct()` can be a bit more challenging. But here a short cut.
+## `Distinct()` into `foreach` loop 
+
+Some high-level functions are easily convertable into a `foreach` loop such as `.Where()`, `Select()`, `ToArray()`, `ToList()` and `ToDictionary()`.
+
+Doing the same for `Distinct()` can be a bit tricky. But here is a shortcut:
 
 ```c#
+List<string> uniqueNames;
+
 // Before optimization
-births
+uniqueNames = births
     .Select(b => b.firstName)
     .Distinct()
     .ToList()
-```
 
-```c#
 // After optimization
-List<string> uniqueNames = new List<string>()
-HashSet<string> seen = new HasSet<T>();
+uniqueNames = new();
+HashSet<string> seen = new();
 foreach(Birth b in births)
 {
     if(seem.Add(b.Name))
@@ -61,11 +63,13 @@ foreach(Birth b in births)
 }
 ```
 
-The `Sort()` sadly cannot be weaved into for-loop with `Where()`, since it requires the whole collection to be filtered to before sorting.
+## About `Sort()` and `OrderBy()`
 
-# Consider dictionaries for repeated search
+The `Sort()` or `OrderBy()` sadly cannot be weaved into `foreach` loop with `Where()`, since it requires the whole collection to be filtered before sorting.
 
-Dictionaries are great for quick retrieval, especially repeated ones. If you have to often search for a value, it might be a good idea to store the data in a `Dictionary` instead of an `Array` or a `List`.
+# Use `Dictionary` for frequent search
+
+Dictionaries are great for quick retrievals, especially for frequent ones. If you often search for a value, consider storing the data in a `Dictionary` instead of an `Array` or a `List`.
 
 ```c#
 class GraveLease {
@@ -142,7 +146,7 @@ foreach (Food foodItem in foods)
 string insertQueries = sb.ToString();
 ```
 
-# Insert item without re-sorting
+# Insert item without re-sorting the collection
 
 Imagine that you have sorted collection into which you want to insert new item. To preserve the order, now you need to re-sort the collection.
 
