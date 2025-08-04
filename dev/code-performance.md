@@ -211,9 +211,37 @@ class NameCount
 
 ```
 
-# Array vs List
+# Iterating `Array` vs `List`
 
+When it comes to iteration, an `Array` always out-performs a `List`, though by an unimpressive margin. Choosing an array can help squeeze out a bit of extra performance, but will not be the main focus of optimization.
 
-## Multitasking
+It's also worth noting that arrays and lists aren't always interchangeable - you likely wouldn't choose an `Array` if you need a flexible, dynamically-sized collection.
+
+But imagine having a collection of last month's personal bank transactions. To get the total amount of money you've spent this month, you have to iterate over the collection - whether it's an `Array` or a `List`. 
+
+```c#
+// Iterating array
+int totalAmount = 0;
+foreach (Transaction tr in transactionArray)
+    totalAmount += tr.amount;
+
+// Iterating list
+int totalAmount = 0;
+foreach (Transaction tr in transactionList)
+    totalAmount += tr.amount;
+
+```
+[Benchmark these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million items in a collection, and you get the following results:
+
+```plain text
+| Method           | Mean     | Error     | StdDev    |
+|----------------- |---------:|----------:|----------:|
+| TotalAmountArray | 7.033 ms | 0.0704 ms | 0.0588 ms |
+| TotalAmountList  | 7.607 ms | 0.0642 ms | 0.0600 ms |
+```
+
+As you can see, the array is faster - but whether the performance gain is worth the extra effort is up to you.
+
+# Multitasking
 
 This is the last point, because it’s obvious. If you are waiting for api response or reading/writing a file, don’t just waste your time, do something else meanwhile. Use Tasks and asynchronous methods.
