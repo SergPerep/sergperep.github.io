@@ -2,74 +2,52 @@
 
 Simple ways to improve C# .NET code speed.
 
+> Not everything needs optimization
+
+> Trade-off between optimization and readability
+
 # Avoid chaining collection extension methods
 
-A single LINQ extension method iterates a collection one time. A chain of LINQ extension methods iterates collections multiple times. This increases processing time. 
+A single LINQ extension method iterates over a collection once. However, chaining multiple LINQ methods can result in multiple iterations, which increases processing time. You can get better performance if you rewrite a chain of collection methods into a single `foreach` loop.
 
-Let's say we have a collection of  1,025 pockemons, 159 of which are of water type. And we want to get the collection of water type pockemons.
+> Keep in mind that although `foreach` will always outperform a chain of LINQ methods, LINQ has become more efficient in recent .NET versions - making the gains from this kind of optimization less impressive.
 
-```c#
-
-// Before optimisation
-List<string> waterPockemonNames = pockemons
-    .Where(p => p.Types.Contains("Water")) // Iterates through 1025 items
-    .Select(p => p.Name) // Iterates through 159 items
-    .ToList() // Iterates through = 159 items
-
-```
-To optimise and save time - combine high-level functions into a single for-loop, which will iterate the collection a single time.
+Imagine you have the birth records of a specific hospital, and you want to find out which names parents were choosing for girls in September 2024.
 
 ```c#
-
-// After optimization
-List<string> waterPokemonNames = new List<string>();
-
-foreach (Pockemon p in pockemons) // Iterates through 1025 items
-{
-    if(p.Types.Contains("Water"))
-    {
-        waterPockemonNames.Add(p.Name)
-    }
-}
-    
-```
-
-A `foreach` loop always out-performs a chain of extension methods - but up to what point?
-
-LINQ extension methods became more performative in later .net versions. Which makes results of the optimisation less impressive.  
-
-Still the benefit of the optimisation grows with the size of collections and complexity of filtering and modification.
-
-## `Distinct()` into `foreach` loop 
-
-Some high-level functions are easily convertable into a `foreach` loop such as `.Where()`, `Select()`, `ToArray()`, `ToList()` and `ToDictionary()`.
-
-Doing the same for `Distinct()` can be a bit tricky. But here is a shortcut:
-
-```c#
-List<string> uniqueNames;
-
 // Before optimization
-uniqueNames = births
-    .Select(b => b.firstName)
+List<string> septemberNames = births
+    .Where(b => b.sex == Sex.Female && b.date.Year == 2024 && b.date.Month == 9)
+    .Select(b => b.name)
     .Distinct()
-    .ToList()
+    .OrderBy(name => name)
+    .ToList();
+```
+The same solution can be rewritten using a `foreach` loop.
 
+```c#
 // After optimization
-uniqueNames = new();
+List<string> septemberNames = new();
 HashSet<string> seen = new();
-foreach(Birth b in births)
+foreach (Birth b in births)
 {
-    if(seem.Add(b.Name))
-    {
-        uniqueNames.Add(b.Name);
-    }    
+    if (b.sex != Sex.Female || b.date.Year != 2024 || b.date.Month != 9)
+        continue;
+    if (seen.Add(b.name)) uniqueNames.Add(b.name);
 }
+septemberNames.Sort();
 ```
 
-## About `Sort()` and `OrderBy()`
+[Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
 
-The `Sort()` or `OrderBy()` sadly cannot be weaved into `foreach` loop with `Where()`, since it requires the whole collection to be filtered before sorting.
+```plain text
+| Method            | Mean     | Error     | StdDev    |
+|------------------ |---------:|----------:|----------:|
+| WithExtMethods    | 8.436 ms | 0.0585 ms | 0.0488 ms |
+| WithoutExtMethods | 7.172 ms | 0.0726 ms | 0.0606 ms |
+```
+
+While the gains have become more modest in recent .NET versions, the benefits of optimization continue to grow as collection size and operation complexity increase.
 
 # Use `Dictionary` for frequent search
 
