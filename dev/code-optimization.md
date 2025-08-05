@@ -81,31 +81,33 @@ Birth[] septemberNames = birthsPerYear[2024].
 
 As you can see, searching using a `Dictionary` is very efficient. Of course, it makes no sense to build the `Dictionary` every time you want to search. But if you know that searching will be frequent, consider storing the dataset in a `Dictionary`.
 
-# Avoid string modifications
+# Avoid string concationation
 
-When you add two strings:
+When you concatinate two strings using `+` operator, the following is happening:
 
 1. Memory is allocated for the resulting string. Its size equals the combined length of the originals. 
 2. Characters from each string are copied into the new space.
 
-**The bottom line:** the longer the original strings, the slower the concatenation.
+The bottom line is the longer the original strings, the slower the concatenation.
 
-If you concat a string once or twice - it is fine. But when you do this many times within a short period of time you are risking overload the memory, which will create noticable delay.
+Concatenating strings once or twice is fine. But doing it repeatedly - especially in loops - can lead to excessive memory allocations, which may cause garbage collection overhead and slow down your application.
 
-Consider this:
+Imagine we have a list of food items along with their nutritional values. This list is stored in memory, and we want to generate SQL `INSERT` queries to add this data to a database.
 
 ```c#
+// Before optimization
 string insertQueries = "";
 foreach (Food foodItem in foods)
 {
-    insertQueries += $"\nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});"
+    insertQueries += $"\nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});";
 }
 ```
 ```c#
+// After optimization
 StringBuilder sb = new("");
 foreach (Food foodItem in foods)
 {
-    sb.Apped($"\nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});");
+    sb.Append($"\nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});");
 }
 
 string insertQueries = sb.ToString();
