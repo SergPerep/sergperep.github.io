@@ -51,52 +51,35 @@ While the gains have become more modest in recent .NET versions, the benefits of
 
 # Use `Dictionary` for frequent search
 
-Dictionaries are great for quick retrievals, especially for frequent ones. If you often search for a value, consider storing the data in a `Dictionary` instead of an `Array` or a `List`.
+Dictionaries are great for quick lookups, especially when they are frequent. If you often need to search for a value, consider storing the data in a `Dictionary` instead of an `Array` or a `List`.
+
+Let's recall our collection of birth records. We want to retrieve the records of girls born in September 2025.
 
 ```c#
-class GraveLease {
-    public string graveId; 
-    public DateTime startDate;
-    public DateTime endDate;
-} 
-
-class Grave {
-    public string id;
-    public bool isOccupied;
-}
-
-graves = new List<Grave> ();
-
-foreach(GraveLease lease in graveLeases){
-    var grave = graves.FirstOrDefault(g => g.id == lease.graveId); // Can be optimised
-    if(grave != null) continue;
-
-    graves.Add(new Grave{ 
-        id = lease,
-        isOccupied = lease.startDate >= DateTime.Now && lease.endDate <= DateTime.Now,
-        });
-}
-
+// Before optimization
+Birth[] septemberNames = births
+    .Where(b => b.sex == Sex.Female && b.date.Year == 2024 && b.date.Month == 9)
+    .ToArray();
 ```
-
+If we decide to store the data in a `birthsPerYear` `Dictionary`, where the key is a year and the value is a list of births for that year, we get the following:
 
 ```c#
-// Find leases of a selected grave
-
-selectedGraveId = "GDH726";
-
-// Before
-
-GraveLease[] expiredleasesOfGrave = leases
-    .Where(l => l.graveId == selectedGraveId && lease.endDate > DateTime.Today)
-    .ToArray();
-
-// After
-
-GraveLease[] expiredleasesOfGrave = leasesByGraveid[selectedGraveId]
-    .Where(lease.endDate > DateTime.Today)
+// After optimization
+Birth[] septemberNames = birthsPerYear[2024].
+    .Where(b => b.sex == Sex.Female && b.date.Month == 9)
     .ToArray();
 ```
+
+[Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
+
+```plain text
+| Method              | Mean      | Error     | StdDev    |
+|-------------------- |----------:|----------:|----------:|
+| IterateCollection   | 10.783 ms | 0.1885 ms | 0.1764 ms |
+| SearchViaDictionary |  3.939 ms | 0.0501 ms | 0.0444 ms |
+```
+
+As you can see, searching using a `Dictionary` is very efficient. Of course, it makes no sense to build the `Dictionary` every time you want to search. But if you know that searching will be frequent, consider storing the dataset in a `Dictionary`.
 
 # Avoid string modifications
 
@@ -151,43 +134,6 @@ euCountries.Insert(index, "Croatia");
 ```
 
 There is `SortedSet<T>` that automatically sorts when item is added. But building the it takes extra in comparison to the `List<T>`, which negates the perfomance win that it could have potentially provide. Though it is still more performative than double sort.
-
----
-
-```c#
-
-Dictionary<int, List<NameCount>> nameCountsPerYear = new ();
-int[] years = births.Select(b => b.year).Distinct().ToArray();
-foreach (int year in years){
-
-    firstNames = births.
-        .Where(b => b.Year == year)
-        .Select(b => b.FirstName)
-        .ToList();
-    
-    List<Name> nameCounts = new ();
-
-    foreach (string firstName in firstNames){
-        var nameCount = nameCounts.FirstOrDefault(n => n.firstName == firstName);
-        if (nameCount == null)
-        {
-            nameCounts.Add(new NameCount(){ firstName = firstName, number = 1 })
-        } else
-        {
-            nameCount.number ++;
-        }
-    }
-    nameCounts = nameCounts.OrderBy(nc => nc.number);
-    nameCountsPerYear[year] = nameCounts;
-}
-
-class NameCount 
-{
-    public string firstName;
-    public int number;
-}
-
-```
 
 # Iterating `Array` vs `List`
 
