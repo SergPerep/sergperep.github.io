@@ -40,12 +40,10 @@ septemberNames.Sort();
 
 [Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
 
-```plain text
 | Method            | Mean     | Error     | StdDev    |
 |------------------ |---------:|----------:|----------:|
 | WithExtMethods    | 8.436 ms | 0.0585 ms | 0.0488 ms |
 | WithoutExtMethods | 7.172 ms | 0.0726 ms | 0.0606 ms |
-```
 
 While the gains have become more modest in recent .NET versions, the benefits of optimization continue to grow as collection size and operation complexity increase.
 
@@ -79,16 +77,16 @@ Birth[] septemberNames = birthsPerYear[2024].
 
 As you can see, searching using a `Dictionary` is very efficient. Of course, it makes no sense to build the `Dictionary` every time you want to search. But if you know that searching will be frequent, consider storing the dataset in a `Dictionary`.
 
-# Avoid string concationation
+# Avoid string concatenations
 
-When you concatinate two strings using `+` operator, the following is happening:
+When you concatenate two strings using `+` operator, the following happens:
 
 1. Memory is allocated for the resulting string. Its size equals the combined length of the originals. 
 2. Characters from each string are copied into the new space.
 
-The bottom line is the longer the original strings, the slower the concatenation.
+The bottom line is: the longer the original strings, the slower the concatenation.
 
-Concatenating strings once or twice is fine. But doing it repeatedly - especially in loops - can lead to excessive memory allocations, which may cause garbage collection overhead and slow down your application.
+Concatenating strings once or twice is fine, but doing it repeatedly - especially in loops - can lead to excessive memory allocations, which may cause garbage collection overhead and slow down your application.
 
 Imagine we have a list of food items along with their nutritional values. This list is stored in memory, and we want to generate SQL `INSERT` queries to add this data to a database.
 
@@ -100,6 +98,9 @@ foreach (Food foodItem in foods)
     insertQueries += $"\nINSERT INTO foods (name, protein, carbs, fat) VALUES ('{foodItem.name}', {foodItem.protein}, {foodItem.carbs}, {foodItem.fat});";
 }
 ```
+
+On the other hand, `StringBuilder` can be used to combine strings. 
+
 ```c#
 // After optimization
 StringBuilder sb = new("");
@@ -110,6 +111,14 @@ foreach (Food foodItem in foods)
 
 string insertQueries = sb.ToString();
 ```
+[Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 10,000 food items shows the following results:
+
+| Method                 | Mean         | Error      | StdDev     |
+|----------------------- |-------------:|-----------:|-----------:|
+| ConcatViaOperator      | 3,436.458 ms | 33.4786 ms | 29.6779 ms |
+| CombineWithStringBuilder |     2.578 ms |  0.0446 ms |  0.0373 ms |
+
+As you can see, combining strings with `StringBuilder` is faster. Under the hood, it keeps the "final string" in a mutable character array, which is more memory-efficient.
 
 # Insert item without re-sorting the collection
 
@@ -165,12 +174,10 @@ foreach (Transaction tr in transactionList)
 ```
 [Benchmark these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million items in a collection, and you get the following results:
 
-```plain text
 | Method           | Mean     | Error     | StdDev    |
 |----------------- |---------:|----------:|----------:|
 | TotalAmountArray | 7.033 ms | 0.0704 ms | 0.0588 ms |
 | TotalAmountList  | 7.607 ms | 0.0642 ms | 0.0600 ms |
-```
 
 As you can see, the array is faster - but whether the performance gain is worth the extra effort is up to you.
 
