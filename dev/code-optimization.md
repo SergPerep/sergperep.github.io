@@ -72,12 +72,10 @@ Birth[] septemberNames = birthsPerYear[2024].
 
 [Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
 
-```plain text
 | Method              | Mean      | Error     | StdDev    |
 |-------------------- |----------:|----------:|----------:|
 | IterateCollection   | 10.783 ms | 0.1885 ms | 0.1764 ms |
 | SearchViaDictionary |  3.939 ms | 0.0501 ms | 0.0444 ms |
-```
 
 As you can see, searching using a `Dictionary` is very efficient. Of course, it makes no sense to build the `Dictionary` every time you want to search. But if you know that searching will be frequent, consider storing the dataset in a `Dictionary`.
 
@@ -134,40 +132,16 @@ int index = euCountries.BinarySearch(item);
 if (index < 0) index = ~index;
 euCountries.Insert(index, "Croatia");
 ```
-Another approach is to use a `SortedSet` instead of a `List`, as it automatically maintains sorted order when items are added. 
-
-```c#
-// After optimization with SortedSet
-SortedSet<string> euCountries = new(_dataset_2012); // sorted
-euContries.Add("Croatia"); // Croatia joined EU in 2013
-```
-
-
 [Benchmarking similar operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million items shows the following results:
 
-```plain text
-| Method                    | Mean            | Error         | StdDev        |
-|-------------------------- |----------------:|--------------:|--------------:|
-| WithResort                | 3,745,282.12 us | 23,668.768 us | 20,981.746 us |
-| WithBinarySearchAndInsert |     5,204.01 us |    102.536 us |    225.069 us |
-| WithSortedSet             |        42.60 us |      1.166 us |      3.211 us |
-```
+| Method                    | Mean         | Error      | StdDev     | Median       |
+|-------------------------- |-------------:|-----------:|-----------:|-------------:|
+| WithResort                | 3,881.417 ms | 24.0758 ms | 22.5205 ms | 3,871.134 ms |
+| WithBinarySearchAndInsert |     5.207 ms |  0.1038 ms |  0.2385 ms |     5.115 ms |
 
-As you can see, SortedSet is incredibly fast. However, building a SortedSet has more overhead compared to a List, which can negate its potential performance gains. Also, SortedSet does not allow duplicates. That said, it can still be more efficient than performing a full sort twice.
+As you can see, although inserting the item into the right place in the `List` is `O(n)` operation, it is much more efficient than re-sorting.
 
-The rule of thumb here is if you have a collection that always must be sorted, does not allow duplicates and insertion is frequent 
-
-Inserting the item into the right place in the `List` is `O(n)` operation, which is still more efficient than re-sorting.
-
-
-
-
-
-Thus, `SortedSet` is optimal for cases where: 
-
-- Duplicates are disallowed
-- Insertions are frequent
-- The collection must remain sorted at all times.
+Another possible approach is to use a `SortedSet` instead of a `List`, as it automatically maintains sorted order when items are added. However, building a SortedSet has more overhead compared to a List, which can negate its potential performance gains. Additionally, `SortedSet` does not allow duplicates and has a few other quirks, making it more suitable for for niche use cases.
 
 # Iterating `Array` vs `List`
 
