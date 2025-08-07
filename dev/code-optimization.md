@@ -6,77 +6,6 @@ Simple ways to improve C# .NET code speed.
 
 > Trade-off between optimization and readability
 
-# Avoid chaining collection extension methods
-
-A single LINQ extension method iterates over a collection once. However, chaining multiple LINQ methods can result in multiple iterations, which increases processing time. You can get better performance if you rewrite a chain of collection methods into a single `foreach` loop.
-
-> Keep in mind that although `foreach` will always outperform a chain of LINQ methods, LINQ has become more efficient in recent .NET versions - making the gains from this kind of optimization less impressive.
-
-Imagine you have the birth records of a specific hospital, and you want to find out which names parents were choosing for girls in September 2024.
-
-```c#
-// Before optimization
-List<string> septemberNames = births
-    .Where(b => b.sex == Sex.Female && b.date.Year == 2024 && b.date.Month == 9)
-    .Select(b => b.name)
-    .Distinct()
-    .OrderBy(name => name)
-    .ToList();
-```
-The same solution can be rewritten using a `foreach` loop.
-
-```c#
-// After optimization
-List<string> septemberNames = new();
-HashSet<string> seen = new();
-foreach (Birth b in births)
-{
-    if (b.sex != Sex.Female || b.date.Year != 2024 || b.date.Month != 9)
-        continue;
-    if (seen.Add(b.name)) uniqueNames.Add(b.name);
-}
-septemberNames.Sort();
-```
-
-[Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
-
-| Method            | Mean     | Error     | StdDev    |
-|------------------ |---------:|----------:|----------:|
-| WithExtMethods    | 8.436 ms | 0.0585 ms | 0.0488 ms |
-| WithoutExtMethods | 7.172 ms | 0.0726 ms | 0.0606 ms |
-
-While the gains have become more modest in recent .NET versions, the benefits of optimization continue to grow as collection size and operation complexity increase.
-
-# Use `Dictionary` for frequent search
-
-Dictionaries are great for quick lookups, especially when they are frequent. If you often need to search for a value, consider storing the data in a `Dictionary` instead of an `Array` or a `List`.
-
-Let's recall our collection of birth records. We want to retrieve the records of girls born in September 2025.
-
-```c#
-// Before optimization
-Birth[] septemberNames = births
-    .Where(b => b.sex == Sex.Female && b.date.Year == 2024 && b.date.Month == 9)
-    .ToArray();
-```
-If we decide to store the data in a `birthsPerYear` `Dictionary`, where the key is a year and the value is a list of births for that year, we get the following:
-
-```c#
-// After optimization
-Birth[] septemberNames = birthsPerYear[2024].
-    .Where(b => b.sex == Sex.Female && b.date.Month == 9)
-    .ToArray();
-```
-
-[Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
-
-| Method              | Mean      | Error     | StdDev    |
-|-------------------- |----------:|----------:|----------:|
-| IterateCollection   | 10.783 ms | 0.1885 ms | 0.1764 ms |
-| SearchViaDictionary |  3.939 ms | 0.0501 ms | 0.0444 ms |
-
-As you can see, searching using a `Dictionary` is very efficient. Of course, it makes no sense to build the `Dictionary` every time you want to search. But if you know that searching will be frequent, consider storing the dataset in a `Dictionary`.
-
 # Avoid string concatenations
 
 When you concatenate two strings using `+` operator, the following happens:
@@ -150,7 +79,79 @@ euCountries.Insert(index, "Croatia");
 
 As you can see, although inserting the item into the right place in the `List` is `O(n)` operation, it is much more efficient than re-sorting.
 
-Another possible approach is to use a `SortedSet` instead of a `List`, as it automatically maintains sorted order when items are added. However, building a SortedSet has more overhead compared to a List, which can negate its potential performance gains. Additionally, `SortedSet` does not allow duplicates and has a few other quirks, making it more suitable for for niche use cases.
+Another possible approach is to use a `SortedSet` instead of a `List`, as it automatically maintains sorted order when items are added. However, building a `SortedSet` has more overhead compared to a `List`, which can negate its potential performance gains. Additionally, `SortedSet` does not allow duplicates and has a few other quirks, making it more suitable for niche use cases.
+
+
+# Use `Dictionary` for frequent search
+
+Dictionaries are great for quick lookups, especially when they are frequent. If you often need to search for a value, consider storing the data in a `Dictionary` instead of an `Array` or a `List`.
+
+Let's recall our collection of birth records. We want to retrieve the records of girls born in September 2025.
+
+```c#
+// Before optimization
+Birth[] septemberNames = births
+    .Where(b => b.sex == Sex.Female && b.date.Year == 2024 && b.date.Month == 9)
+    .ToArray();
+```
+If we decide to store the data in a `birthsPerYear` `Dictionary`, where the key is a year and the value is a list of births for that year, we get the following:
+
+```c#
+// After optimization
+Birth[] septemberNames = birthsPerYear[2024].
+    .Where(b => b.sex == Sex.Female && b.date.Month == 9)
+    .ToArray();
+```
+
+[Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
+
+| Method              | Mean      | Error     | StdDev    |
+|-------------------- |----------:|----------:|----------:|
+| IterateCollection   | 10.783 ms | 0.1885 ms | 0.1764 ms |
+| SearchViaDictionary |  3.939 ms | 0.0501 ms | 0.0444 ms |
+
+As you can see, searching using a `Dictionary` is very efficient. Of course, it makes no sense to build the `Dictionary` every time you want to search. But if you know that searching will be frequent, consider storing the dataset in a `Dictionary`.
+
+# Avoid chaining collection extension methods
+
+A single LINQ extension method iterates over a collection once. However, chaining multiple LINQ methods can result in multiple iterations, which increases processing time. You can get better performance if you rewrite a chain of collection methods into a single `foreach` loop.
+
+> Keep in mind that although `foreach` will always outperform a chain of LINQ methods, LINQ has become more efficient in recent .NET versions - making the gains from this kind of optimization less impressive.
+
+Imagine you have the birth records of a specific hospital, and you want to find out which names parents were choosing for girls in September 2024.
+
+```c#
+// Before optimization
+List<string> septemberNames = births
+    .Where(b => b.sex == Sex.Female && b.date.Year == 2024 && b.date.Month == 9)
+    .Select(b => b.name)
+    .Distinct()
+    .OrderBy(name => name)
+    .ToList();
+```
+The same solution can be rewritten using a `foreach` loop.
+
+```c#
+// After optimization
+List<string> septemberNames = new();
+HashSet<string> seen = new();
+foreach (Birth b in births)
+{
+    if (b.sex != Sex.Female || b.date.Year != 2024 || b.date.Month != 9)
+        continue;
+    if (seen.Add(b.name)) uniqueNames.Add(b.name);
+}
+septemberNames.Sort();
+```
+
+[Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
+
+| Method            | Mean     | Error     | StdDev    |
+|------------------ |---------:|----------:|----------:|
+| WithExtMethods    | 8.436 ms | 0.0585 ms | 0.0488 ms |
+| WithoutExtMethods | 7.172 ms | 0.0726 ms | 0.0606 ms |
+
+While the gains have become more modest in recent .NET versions, the benefits of optimization continue to grow as collection size and operation complexity increase.
 
 # Iterating `Array` vs `List`
 
