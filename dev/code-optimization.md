@@ -1,4 +1,4 @@
-# Code optimization
+# Code optimization: C# .NET
 
 Simple ways to make C# .NET code more efficient. The provided [benchmarks](https://github.com/SergPerep/benchmarks_dotnet) were measured using .NET 8.0.
 
