@@ -4,7 +4,6 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   appearance: false,
   markdown: {
-    anchor: { level: undefined },
     theme:  'min-light',
   },
   head: [

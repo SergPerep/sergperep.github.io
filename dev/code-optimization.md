@@ -7,15 +7,11 @@ Keep in mind that not everything is worth optimizing because:
 - Benefits vary depending on the part of the application; some areas handle heavier workloads or are more critical.
 - Optimization often makes code harder to read.
 
-Table of contents:
-- [Do things concurrently](#do-things-concurrently)
-- [Avoid string concatenations](#avoid-chaining-collection-extension-methods)
-- [Insert item without re-sorting the collection](#insert-item-without-re-sorting-the-collection)
-- [Use `Dictionary` for frequent search](#use-dictionary-for-frequent-search)
-- [Avoid chaining collection extension methods](#avoid-chaining-collection-extension-methods)
-- [Iterating `Array` vs `List`](#iterating-array-vs-list)
+Tables of content:
 
-# Do things concurrently
+[[toc]]
+
+## Do things concurrently
 
 When waiting for an API response or file I/O, don't waste time - use asynchronous methods to do other work concurrently.
 
@@ -45,7 +41,7 @@ If one call takes 200 ms and we have 10 food items, then [benchmarking](https://
 
 As you can see, this can significantly improve performance and is often the main focus of optimization.
 
-# Avoid string concatenations
+## Avoid string concatenations
 
 When you concatenate two strings using `+` operator, the following happens:
 
@@ -88,7 +84,7 @@ string insertQueries = sb.ToString();
 
 As you can see, combining strings with `StringBuilder` is faster. Under the hood, it keeps the "final string" in a mutable character array, which is more memory-efficient.
 
-# Insert item without re-sorting the collection
+## Insert item without re-sorting the collection
 
 Imagine that you have sorted collection into which you want to insert new item. To preserve the order, now you need to re-sort the collection.
 
@@ -121,7 +117,7 @@ As you can see, although inserting the item into the right place in the `List` i
 Another possible approach is to use a `SortedSet` instead of a `List`, as it automatically maintains sorted order when items are added. However, building a `SortedSet` has more overhead compared to a `List`, which can negate its potential performance gains. Additionally, `SortedSet` does not allow duplicates and has a few other quirks, making it more suitable for niche use cases.
 
 
-# Use `Dictionary` for frequent search
+## Use `Dictionary` for frequent search
 
 Dictionaries are great for quick lookups, especially when they are frequent. If you often need to search for a value, consider storing the data in a `Dictionary` instead of an `Array` or a `List`.
 
@@ -151,7 +147,7 @@ Birth[] septemberNames = birthsPerYear[2024].
 
 As you can see, searching using a `Dictionary` is very efficient. Of course, it makes no sense to build the `Dictionary` every time you want to search. But if you know that searching will be frequent, consider storing the dataset in a `Dictionary`.
 
-# Avoid chaining collection extension methods
+## Avoid chaining collection extension methods
 
 A single LINQ extension method iterates over a collection once. However, chaining multiple LINQ methods can result in multiple iterations, which increases processing time. You can get better performance if you rewrite a chain of collection methods into a single `foreach` loop.
 
@@ -192,7 +188,7 @@ septemberNames.Sort();
 
 While the gains have become more modest in recent .NET versions, the benefits of optimization continue to grow as collection size and operation complexity increase.
 
-# Iterating `Array` vs `List`
+## Iterating `Array` vs `List`
 
 When it comes to iteration, an `Array` always out-performs a `List`, though by an unimpressive margin. Choosing an array can help squeeze out a bit of extra performance, but will not be the main focus of optimization.
 

@@ -10,7 +10,7 @@ I’m a software engineer in the mornings and a comic artist and a storyteller a
 
 ## Dev blog
 
-- Code optimization: C# .NET 🚧
+- [Code optimization: C# .NET](/dev/code-optimization.md)
 
  ## Projects
 
