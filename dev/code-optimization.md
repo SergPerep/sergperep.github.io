@@ -1,10 +1,19 @@
 # Code optimization
 
-Simple ways to improve C# .NET code speed.
+Simple ways to make C# .NET code more efficient. The provided [benchmarks](https://github.com/SergPerep/benchmarks_dotnet) were measured using .NET 8.0.
 
-> Not everything needs optimization
+Keep in mind that not everything is worth optimizing because:
 
-> Trade-off between optimization and readability
+- Benefits vary depending on the part of the application; some areas handle heavier workloads or are more critical.
+- Optimization often makes code harder to read.
+
+Table of contents:
+- [Do things concurrently](#do-things-concurrently)
+- [Avoid string concatenations](#avoid-chaining-collection-extension-methods)
+- [Insert item without re-sorting the collection](#insert-item-without-re-sorting-the-collection)
+- [Use `Dictionary` for frequent search](#use-dictionary-for-frequent-search)
+- [Avoid chaining collection extension methods](#avoid-chaining-collection-extension-methods)
+- [Iterating `Array` vs `List`](#iterating-array-vs-list)
 
 # Do things concurrently
 
