@@ -42,10 +42,10 @@ string insertQueries = sb.ToString();
 ```
 [Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 10,000 food items shows the following results:
 
-| Method                 | Mean         | Error      | StdDev     |
-|----------------------- |-------------:|-----------:|-----------:|
-| ConcatViaOperator      | 3,436.458 ms | 33.4786 ms | 29.6779 ms |
-| CombineWithStringBuilder |     2.578 ms |  0.0446 ms |  0.0373 ms |
+| Method                 | Mean         |
+|----------------------- |-------------:|
+| ConcatViaOperator      | 3,436.458 ms |
+| CombineWithStringBuilder |     2.578 ms |
 
 As you can see, combining strings with `StringBuilder` is faster. Under the hood, it keeps the "final string" in a mutable character array, which is more memory-efficient.
 
@@ -72,10 +72,10 @@ euCountries.Insert(index, "Croatia");
 ```
 [Benchmarking similar operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million items shows the following results:
 
-| Method                    | Mean         | Error      | StdDev     | Median       |
-|-------------------------- |-------------:|-----------:|-----------:|-------------:|
-| WithResort                | 3,881.417 ms | 24.0758 ms | 22.5205 ms | 3,871.134 ms |
-| WithBinarySearchAndInsert |     5.207 ms |  0.1038 ms |  0.2385 ms |     5.115 ms |
+| Method                    | Mean         |
+|-------------------------- |-------------:|
+| WithResort                | 3,881.417 ms |
+| WithBinarySearchAndInsert |     5.207 ms |
 
 As you can see, although inserting the item into the right place in the `List` is `O(n)` operation, it is much more efficient than re-sorting.
 
@@ -105,10 +105,10 @@ Birth[] septemberNames = birthsPerYear[2024].
 
 [Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
 
-| Method              | Mean      | Error     | StdDev    |
-|-------------------- |----------:|----------:|----------:|
-| IterateCollection   | 10.783 ms | 0.1885 ms | 0.1764 ms |
-| SearchViaDictionary |  3.939 ms | 0.0501 ms | 0.0444 ms |
+| Method              | Mean      | 
+|-------------------- |----------:|
+| IterateCollection   | 10.783 ms |
+| SearchViaDictionary |  3.939 ms |
 
 As you can see, searching using a `Dictionary` is very efficient. Of course, it makes no sense to build the `Dictionary` every time you want to search. But if you know that searching will be frequent, consider storing the dataset in a `Dictionary`.
 
@@ -146,10 +146,10 @@ septemberNames.Sort();
 
 [Benchmarking these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million births shows the following results:
 
-| Method            | Mean     | Error     | StdDev    |
-|------------------ |---------:|----------:|----------:|
-| WithExtMethods    | 8.436 ms | 0.0585 ms | 0.0488 ms |
-| WithoutExtMethods | 7.172 ms | 0.0726 ms | 0.0606 ms |
+| Method            | Mean     |
+|------------------ |---------:|
+| WithExtMethods    | 8.436 ms |
+| WithoutExtMethods | 7.172 ms |
 
 While the gains have become more modest in recent .NET versions, the benefits of optimization continue to grow as collection size and operation complexity increase.
 
@@ -175,13 +175,39 @@ foreach (Transaction tr in transactionList)
 ```
 [Benchmark these operations](https://github.com/SergPerep/benchmarks_dotnet) with 1 million items in a collection, and you get the following results:
 
-| Method           | Mean     | Error     | StdDev    |
-|----------------- |---------:|----------:|----------:|
-| TotalAmountArray | 7.033 ms | 0.0704 ms | 0.0588 ms |
-| TotalAmountList  | 7.607 ms | 0.0642 ms | 0.0600 ms |
+| Method           | Mean     |
+|----------------- |---------:|
+| TotalAmountArray | 7.033 ms |
+| TotalAmountList  | 7.607 ms |
 
 As you can see, the array is faster - but whether the performance gain is worth the extra effort is up to you.
 
-# Multitasking
+# Doing things concurrently
 
-This is the last point, because it’s obvious. If you are waiting for api response or reading/writing a file, don’t just waste your time, do something else meanwhile. Use Tasks and asynchronous methods.
+When waiting for an API response or file I/O, don't waste time - use asynchronous methods to do other work concurrently.
+
+Imagine you have 10 food items with their nutritional values that you want to add to the database using a web API. The web API has only one endpoint that allows you to add one item at a time.
+
+You can add items one by one sequentially, waiting for a response before sending the next request.
+
+```c#
+// Before optimization
+foreach (Food foodItem in foods)
+    await postFoodItemAsync(foodItem);
+```
+Alternatively, you can make all the calls concurrently:
+```c#
+// After optimization
+Task[] tasks = foods
+    .Select(f => postFoodItemAsync(f))
+    .ToArray();
+await Task.WhenAll(tasks);
+```
+If one call takes 200 ms and we have 10 food items, then [benchmarking](https://github.com/SergPerep/benchmarks_dotnet) will show the following results:
+
+| Method     | Mean       |
+|----------- |-----------:|
+| Sequential | 2,004.2 ms |
+| Concurrent |   200.6 ms |
+
+As you can see, this can significantly improve performance and is often the main focus of optimization.
