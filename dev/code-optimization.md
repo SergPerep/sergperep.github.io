@@ -6,6 +6,36 @@ Simple ways to improve C# .NET code speed.
 
 > Trade-off between optimization and readability
 
+# Do things concurrently
+
+When waiting for an API response or file I/O, don't waste time - use asynchronous methods to do other work concurrently.
+
+Imagine you have 10 food items with their nutritional values that you want to add to the database using a web API. The web API has only one endpoint that allows you to add one item at a time.
+
+You can add items one by one sequentially, waiting for a response before sending the next request.
+
+```c#
+// Before optimization
+foreach (Food foodItem in foods)
+    await postFoodItemAsync(foodItem);
+```
+Alternatively, you can make all the calls concurrently:
+```c#
+// After optimization
+Task[] tasks = foods
+    .Select(f => postFoodItemAsync(f))
+    .ToArray();
+await Task.WhenAll(tasks);
+```
+If one call takes 200 ms and we have 10 food items, then [benchmarking](https://github.com/SergPerep/benchmarks_dotnet) will show the following results:
+
+| Method     | Mean       |
+|----------- |-----------:|
+| Sequential | 2,004.2 ms |
+| Concurrent |   200.6 ms |
+
+As you can see, this can significantly improve performance and is often the main focus of optimization.
+
 # Avoid string concatenations
 
 When you concatenate two strings using `+` operator, the following happens:
@@ -181,33 +211,3 @@ foreach (Transaction tr in transactionList)
 | TotalAmountList  | 7.607 ms |
 
 As you can see, the array is faster - but whether the performance gain is worth the extra effort is up to you.
-
-# Doing things concurrently
-
-When waiting for an API response or file I/O, don't waste time - use asynchronous methods to do other work concurrently.
-
-Imagine you have 10 food items with their nutritional values that you want to add to the database using a web API. The web API has only one endpoint that allows you to add one item at a time.
-
-You can add items one by one sequentially, waiting for a response before sending the next request.
-
-```c#
-// Before optimization
-foreach (Food foodItem in foods)
-    await postFoodItemAsync(foodItem);
-```
-Alternatively, you can make all the calls concurrently:
-```c#
-// After optimization
-Task[] tasks = foods
-    .Select(f => postFoodItemAsync(f))
-    .ToArray();
-await Task.WhenAll(tasks);
-```
-If one call takes 200 ms and we have 10 food items, then [benchmarking](https://github.com/SergPerep/benchmarks_dotnet) will show the following results:
-
-| Method     | Mean       |
-|----------- |-----------:|
-| Sequential | 2,004.2 ms |
-| Concurrent |   200.6 ms |
-
-As you can see, this can significantly improve performance and is often the main focus of optimization.
